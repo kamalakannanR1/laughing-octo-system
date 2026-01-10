@@ -38,6 +38,7 @@ let currentPiece = null;
 let currentX = 0;
 let currentY = 0;
 let score = 0;
+let highScore = 0;
 let gameOver = false;
 let isPaused = false;
 let dropCounter = 0;
@@ -58,6 +59,10 @@ function init() {
     .map(() => Array(COLS).fill(0));
 
   // Set initial target pattern
+
+  // Load high score from localStorage
+highScore = parseInt(localStorage.getItem("stackOverflownHighScore")) || 0;
+document.getElementById("high-score").textContent = highScore;
   setNewTargetPattern();
 
   // Spawn first piece
@@ -307,6 +312,13 @@ function clearPattern(startRow, startCol) {
 // Update score display
 function updateScore() {
   document.getElementById("score").textContent = score;
+
+  // Update high score if current score exceeds it
+  if (score > highScore) {
+    highScore = score;
+    document.getElementById("high-score").textContent = highScore;
+    localStorage.setItem("stackOverflownHighScore", highScore);
+  }
 }
 
 // Handle keyboard input
